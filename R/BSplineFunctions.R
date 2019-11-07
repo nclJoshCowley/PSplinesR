@@ -116,7 +116,6 @@ CalculateCV <- function(xx, yy, lambda) {
 }
 
 # FUN -- Returns lambda that minimises CV error
-# FAIL ??
 GetOptimalSmooth <- function(xx, yy, toPlot = T, lambdaMax = 5, tol=0.2) {
   Lambdas <-  seq(tol, lambdaMax, tol)
   CVs <-  vector(mode = "numeric", length = length(Lambdas))
@@ -134,7 +133,6 @@ GetOptimalSmooth <- function(xx, yy, toPlot = T, lambdaMax = 5, tol=0.2) {
 }
 
 # FUN -- Plot some data then plot the fitted values
-# TASK - Add p=0.95 CI using diagonal of dispersion matrix
 ShowFit <- function(xx, yy, lambda, CI = 0.95) {
   # Plot original data
   plot(xx, yy, pch = 4)
@@ -147,7 +145,8 @@ ShowFit <- function(xx, yy, lambda, CI = 0.95) {
   toPlot <- list(mean = fit$YEst, lower = fit$YEst - SE, upper = fit$YEst + SE)
 
   ## CI
-  polygon(c(xx, rev(xx)), c(toPlot$lower, rev(toPlot$upper)), col = "grey75") border = F)
+  polygon(c(xx, rev(xx)), c(toPlot$lower, rev(toPlot$upper)),
+          col = "grey75", border = F)
   # Re-add points over polygon
   points(xx, yy, pch = 4)
   ## Fitted line

@@ -116,8 +116,9 @@ CalculateCV <- function(xx, yy, lambda) {
 }
 
 # FUN -- Returns lambda that minimises CV error
-GetOptimalSmooth <- function(xx, yy, toPlot = T, lambdaMax = 5, tol=0.2) {
-  Lambdas <-  seq(tol, lambdaMax, tol)
+GetOptimalSmooth <- function(xx, yy, toPlot = T, Lambdas) {
+  if(missing(Lambdas)) stop("You must provide a range of smoothing values")
+
   CVs <-  vector(mode = "numeric", length = length(Lambdas))
 
   for (i in 1:length(Lambdas)) {
@@ -133,7 +134,7 @@ GetOptimalSmooth <- function(xx, yy, toPlot = T, lambdaMax = 5, tol=0.2) {
 }
 
 # FUN -- Plot some data then plot the fitted values
-ShowFit <- function(xx, yy, lambda, CI = 0.95) {
+ShowPSplineFit <- function(xx, yy, lambda, CI = 0.95) {
   # Plot original data
   plot(xx, yy, pch = 4)
 
@@ -152,3 +153,5 @@ ShowFit <- function(xx, yy, lambda, CI = 0.95) {
   ## Fitted line
   lines(xx, toPlot$mean)
 }
+
+# GetOptimalSmooth(EgData129$x,EgData129$y, T, seq(907.5,908.5,0.1))

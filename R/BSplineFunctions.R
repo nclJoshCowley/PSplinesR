@@ -59,6 +59,7 @@ ShowBSpline <- function(x, B, lty=1:ncol(B), col=1:ncol(B)) {
   for (i in 1:ncol(B)) lines(x, B[, i], lty=lty[i], col=col[i])
 }
 
+# FUN -- Estimate values given data (x,y) with dispersion matrix estimate
 FittedVals <- function(xx, yy, lambda) {
   # Get natural cubic B-spline
   n <- length(xx)
@@ -77,16 +78,20 @@ FittedVals <- function(xx, yy, lambda) {
   sigEst <- sum((yy - -yEst)^2) / (n - sum(diag(H)))
   yVarEst <- sigEst * (H %*% t(H))
 
-  return(list(yEst = yEst, yVarEst = yVarEst))
+  return(list(yEst = as.vector(t(yEst)), yVarEst = yVarEst))
 }
 
-z <- function() {
-  x = seq(0,1,0.01) * 2 * pi
-  y = sin(x) + rnorm(length(x),0,0.2)
+# FUN -- Leave one out cross validation
+CalculateCV <- function(xx, yy, lambda, yEst = NULL) {
+  n = length(xx)
 
-  plot(x,y,type="l")
+  # Get fitted values if not passed
+  if(is.null(yEst)) yEst <- PSplinesR::FittedVals(xx, yy, lambda)$yEst
 
-  lst = FittedVals(x,y,10000)
+  # Get CV error for each observation
+  CVerror <- vector(mode="numeric", length = length(xx))
+  for (i in 1:n) CVerror = yy[i] - yEst[i]
 
-  lines(x,lst$yEst, col=2)
+  # CV(lambda) is mean of CV error sqaured
+  return(mean(CVerror^2))
 }

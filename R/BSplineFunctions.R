@@ -74,24 +74,32 @@ FittedVals <- function(xx, yy, lambda) {
   H <- B %*% solve((t(B) %*% B) + lambda * (t(D) %*% D), t(B))
 
   # Using theory from Molinair (2014) and LaTeX doc.
-  yEst <- H %*% yy
-  sigEst <- sum((yy - -yEst)^2) / (n - sum(diag(H)))
+  YEst <- H %*% yy
+  sigEst <- sum((yy - -YEst)^2) / (n - sum(diag(H)))
   yVarEst <- sigEst * (H %*% t(H))
 
-  return(list(yEst = as.vector(t(yEst)), yVarEst = yVarEst))
+  return(list(YEst = as.vector(t(YEst)), yVarEst = yVarEst))
 }
 
 # FUN -- Leave one out cross validation
-CalculateCV <- function(xx, yy, lambda, yEst = NULL) {
+CalculateCV <- function(xx, yy, lambda, YEst = NULL) {
   n = length(xx)
 
   # Get fitted values if not passed
-  if(is.null(yEst)) yEst <- PSplinesR::FittedVals(xx, yy, lambda)$yEst
+  if(is.null(YEst)) YEst <- PSplinesR::FittedVals(xx, yy, lambda)$YEst
 
   # Get CV error for each observation
   CVerror <- vector(mode="numeric", length = length(xx))
-  for (i in 1:n) CVerror = yy[i] - yEst[i]
+  for (i in 1:n) CVerror = yy[i] - YEst[i]
 
   # CV(lambda) is mean of CV error sqaured
   return(mean(CVerror^2))
 }
+
+# FUN -- Returns lambda that minimises CV error
+# GetOptimalSmooth(xx, yy, toPlot = T, lambdaMax = 10, tol=0.01) {
+#   Lambdas = seq(tol, lambdaMax, tol)
+#
+#   for (ll in )
+#
+# }

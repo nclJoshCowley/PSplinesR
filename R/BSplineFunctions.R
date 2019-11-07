@@ -38,7 +38,7 @@ GetBSpline <- function(x, deg = 3, IntKnots, ExtKnots) {
 
   # Fill matrix columns with basis functions
   B <- matrix(0, length(x), NumF)
-  for (i in 1:NumF) B[,i] = GetBasis(x, deg, AugKnots, i)
+  for (i in 1:NumF) B[,i] = PSplinesR::GetBasis(x, deg, AugKnots, i)
 
   # Manually add in boundary to final basis function
   if(any(x == ExtKnots[2])) B[x == ExtKnots[2], NumF] <- 1
@@ -57,4 +57,36 @@ ShowBSpline <- function(x, B, lty=1:ncol(B), col=1:ncol(B)) {
 
   # Add basis functions to plot
   for (i in 1:ncol(B)) lines(x, B[, i], lty=lty[i], col=col[i])
+}
+
+FittedVals <- function(xx, yy, lambda) {
+  # Get natural cubic B-spline
+  n <- length(xx)
+  IK <- xx[-c(1,n)]
+  EK <- xx[c(1,n)]
+  B <- PSplinesR::GetBSpline(xx, deg=3, IK, EK)
+
+  # Get difference matrix (see DiffMatrix.R)
+  D <- PSplinesR::GetDiffMatrix(dim(B)[1],2)
+
+  # Calculate Hat matrix
+  H <- B %*% solve((t(B) %*% B) + lambda * (t(D) %*% D), t(B))
+
+  # Using theory from Molinair (2014) and LaTeX doc.
+  yEst <- H %*% yy
+  sigEst <- sum((yy - -yEst)^2) / (n - sum(diag(H)))
+  yVarEst <- sigEst * (H %*% t(H))
+
+  return(list(yEst = yEst, yVarEst = yVarEst))
+}
+
+z <- function() {
+  x = seq(0,1,0.01) * 2 * pi
+  y = sin(x) + rnorm(length(x),0,0.2)
+
+  plot(x,y,type="l")
+
+  lst = FittedVals(x,y,10000)
+
+  lines(x,lst$yEst, col=2)
 }

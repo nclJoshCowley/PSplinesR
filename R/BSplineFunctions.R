@@ -1,9 +1,22 @@
 ## ------------------------------------------------------------------------
-## Josh Cowley. Last Modified 06-11-19
+## Josh Cowley.
 ## Functions to generate B-spline basis functions
 ## ------------------------------------------------------------------------
 
-# FUN -- Gets the i^th basis functions for some given deg / AugKnots.
+# GetBasis() --------------------------------------------------------------
+#' Get Basis functions
+#'
+#' Retrieves the \eqn{i}-th basis function mapping for some given range
+#' \code{x}, degree and augmented knot set by means of recursion.
+#'
+#' @param x Range of values to define the function over.
+#' @param deg Degree of the desired B-Spline.
+#' @param KKnots Augmented knot set.
+#' @param i Current level of basis function.
+#'
+#' @return The \eqn{i}-th basis function \eqn{\phi} of level \code{deg}
+#' from B-Spline generative procedure
+#'
 GetBasis <- function(x, deg, KKnots, i) {
   # Return base case (degree = 0)
   if (deg == 0) {
@@ -29,7 +42,23 @@ GetBasis <- function(x, deg, KKnots, i) {
   return(phi)
 }
 
-# FUN -- Create matrix with columns equal to B-Spline basis functions.
+
+# GetBSpline() ------------------------------------------------------------
+#' Get B-Spline Matrix
+#'
+#' Generates B-Spline functions over some parameters and places such functions
+#' into columns of a \eqn{n} by \eqn{(m + deg + 1)} matrix
+#'
+#' @param x Range of values to define the function over.
+#' @param deg Degree of the desired B-Spline.
+#' @param IntKnots Interior knots that partially define the B-Spline.
+#' @param  ExtKnots Exterior knots, often \code{ExtKnots = c(min(x),max(x))}.
+#'
+#' @return Matrix where \eqn{i,j}-th entry corresponds to \eqn{j}-th basis
+#' function evaluated at \eqn{i}-th data point.
+#'
+#' @export
+#'
 GetBSpline <- function(x, deg = 3, IntKnots, ExtKnots) {
   # Augment exterior knots around interior knots
   AugKnots <- c(rep(ExtKnots[1], deg + 1), IntKnots, rep(ExtKnots[2], deg + 1))
@@ -46,8 +75,21 @@ GetBSpline <- function(x, deg = 3, IntKnots, ExtKnots) {
   return(B)
 }
 
-# METHOD -- Plot the B-Spline basis matrix produced by GetBSPline()
-ShowBSpline <- function(x, B, lty = 1:ncol(B), col = 1:ncol(B)) {
+# PlotBSpline() -----------------------------------------------------------
+#' Plot B-Spline functions
+#'
+#' Takes some B-Spline basis matrix from \code{GetBSpline()} and plots the
+#' output. *Note* \code{x} must match the \code{x} used in
+#' \code{GetBSpline(x, ...)}.
+#'
+#' @param x Same \code{x} used in \code{GetBSpline(x, ...)}.
+#' @param B Output from \code{GetBSpline()} call.
+#' @param lty Line type. Can be single value or range of values.
+#' @param col Line colour. Can be single value or range of values.
+#'
+#' @export
+#'
+PlotBSpline <- function(x, B, lty = 1:ncol(B), col = 1:ncol(B)) {
   # Possible to only pass a single graphical option
   if (length(lty == 1)) lty = rep(lty, ncol(B))
   if (length(col == 1)) col = rep(col, ncol(B))
@@ -59,99 +101,3 @@ ShowBSpline <- function(x, B, lty = 1:ncol(B), col = 1:ncol(B)) {
   # Add basis functions to plot
   for (i in 1:ncol(B)) lines(x, B[, i], lty = lty[i], col = col[i])
 }
-
-# FUN -- Estimate values given data (x,y) with dispersion matrix estimate
-FittedVals <- function(xx, yy, lambda) {
-  # Get natural cubic B-spline
-  n <- length(xx)
-  IK <- xx[-c(1, n)]
-  EK <- xx[c(1, n)]
-  B <- PSplinesR::GetBSpline(xx, deg = 3, IK, EK)
-
-  # Get difference matrix (see DiffMatrix.R)
-  D <- PSplinesR::GetDiffMatrix(dim(B)[1], 2)
-
-  # Calculate \hat{\bm{\alpha} and Hat matrix
-  temp <-  solve((t(B) %*% B) + lambda * (t(D) %*% D), t(B))
-  AlphaEst <-  temp %*% yy
-  H <- B %*% temp
-
-  # Using theory from Molinair (2014) and LaTeX doc.
-  YEst <- H %*% yy
-  Sig2Est <- sum((yy - YEst)^2) / (n - sum(diag(H)))
-  YVarEst <- Sig2Est * (H %*% t(H))
-
-  return(list(AlphaEst = AlphaEst,
-              YEst = as.vector(t(YEst)),
-              YVarEst = YVarEst))
-}
-
-# FUN -- Get alpha fitted values from (xx,yy) then use est's to get y* = f(x*)
-PredictVals <- function(xx, yy, lambda, XNew) {
-  # Get B-spline basis functions at XNew
-  IK <- xx[-c(1, length(xx))]
-  EK <- xx[c(1, length(xx))]
-  BNew <- PSplinesR::GetBSpline(XNew, deg = 3, IK, EK)
-
-  # y* = sum_{j=1,..,q} b_q(x*) alpha_q
-  AlphaEst <- PSplinesR::FittedVals(xx, yy, lambda)$AlphaEst
-  YNew = sum(BNew %*% AlphaEst)
-
-  return(as.numeric(YNew))
-}
-
-# FUN -- Leave one out cross validation
-CalculateCV <- function(xx, yy, lambda) {
-  n <- length(xx)
-
-  # Get CV error for each observation
-  CVerror <- vector(mode="numeric", length = length(xx))
-  for (i in 1:n) {
-    TestYEst <- PredictVals(xx[-i], yy[-i], lambda, xx[i])
-    CVerror[i] <- yy[i] - TestYEst
-  }
-
-  # CV(lambda) is mean of CV error sqaured
-  return(mean(CVerror^2))
-}
-
-# FUN -- Returns lambda that minimises CV error
-GetOptimalSmooth <- function(xx, yy, toPlot = T, Lambdas) {
-  if(missing(Lambdas)) stop("You must provide a range of smoothing values")
-
-  CVs <-  vector(mode = "numeric", length = length(Lambdas))
-
-  for (i in 1:length(Lambdas)) {
-    CVs[i] <- CalculateCV(xx, yy, Lambdas[i])
-  }
-
-  if (toPlot) {
-    plot(Lambdas, CVs, type="l")
-  }
-
-  OptimalLambda = Lambdas[which(CVs == min(CVs))]
-  return(OptimalLambda)
-}
-
-# FUN -- Plot some data then plot the fitted values
-ShowPSplineFit <- function(xx, yy, lambda, CI = 0.95) {
-  # Plot original data
-  plot(xx, yy, pch = 4)
-
-  # Calculate SE
-  fit <- PSplinesR::FittedVals(xx, yy, lambda)
-  SE <- qnorm(0.5 * (CI + 1)) * sqrt(diag(fit$YVarEst))
-
-  # Calculate fitted values with CI values
-  toPlot <- list(mean = fit$YEst, lower = fit$YEst - SE, upper = fit$YEst + SE)
-
-  ## CI
-  polygon(c(xx, rev(xx)), c(toPlot$lower, rev(toPlot$upper)),
-          col = "grey75", border = F)
-  # Re-add points over polygon
-  points(xx, yy, pch = 4)
-  ## Fitted line
-  lines(xx, toPlot$mean)
-}
-
-# GetOptimalSmooth(EgData129$x,EgData129$y, T, seq(907.5,908.5,0.1))

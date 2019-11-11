@@ -13,3 +13,4 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 URL: http://github.com/nclJoshCowley/PSplinesR
+RoxygenNote: 6.1.1

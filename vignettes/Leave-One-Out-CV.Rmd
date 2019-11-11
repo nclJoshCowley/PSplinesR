@@ -1,0 +1,77 @@
+---
+title: "Leave-One-Out-CV"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Leave-One-Out-CV}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+```{r, include = F}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.height = 4,
+  fig.width = 7.5
+)
+```
+```{r setup, include = F}
+library(PSplinesR)
+par(cex.axis = 1.5, cex.lab = 1.5)
+```
+
+Here, we consider the data provided in this package `EgData129`. See `?EgData129` for more information on this data.
+
+```{r, ShowData}
+x <- EgData65$x
+y <- EgData65$y
+
+plot(x, y, pch = 4)
+lines(x, sin(x), col = 2)
+```
+
+---
+
+Due to the lack of speed of the LOOCV function we look at CV error at sparse
+points on the log scale
+
+```{r, LogScale}
+PSplinesR::MinimiseLOOCV(x, y, c(0.01, 0.1, 1, 10, 100, 1000, 10000), FALSE)
+```
+
+---
+
+We got the minimum value 100, using this initial information, we can obtain 
+the optimal smoothing parameter to a specified degree of accuracy.
+
+```{r, Iter1}
+PSplinesR::MinimiseLOOCV(x, y, c(1, seq(100, 1000, 100)))
+```
+```{r, Iter2}
+PSplinesR::MinimiseLOOCV(x, y, seq(10, 190, 10))
+```
+```{r, Iter3}
+PSplinesR::MinimiseLOOCV(x, y, seq(51, 69, 1))
+```
+```{r, Iter4}
+minVal <- PSplinesR::MinimiseLOOCV(x, y, seq(62.1, 63.9, 0.1))
+print(minVal)
+```
+
+---
+
+This smoothing parameter is the minimiser of the CV error (to 3.s.f.).
+
+Hence, this value of smoothing parameter leads to the optimal fitted values in
+regard to the bias variance trade-off.
+
+We plot these fitted values alongside some other fitted values generated from
+different smoothing parameters alongside the original data.
+
+```{r, fig.height=8}
+par(mfrow=c(2,2))
+for(LamI in c(10^(-3), minVal, 10^3, 10^6)) {
+  CVI <- round(PSplinesR::CalculateLOOCV(x, y, LamI), 4)
+  PSplinesR::PlotPSplineFit(x, y, LamI,
+                            main = paste("Smooth =", LamI, " CV =", CVI))
+}
+```

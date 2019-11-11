@@ -17,6 +17,6 @@ PlotBSpline(x, B, lty = 1:ncol(B), col = 1:ncol(B))
 }
 \description{
 Takes some B-Spline basis matrix from \code{GetBSpline()} and plots the
-output. *Note* \code{x} must match the \code{x} used in
-\code{GetBSpline(x, ...)}.
+  output. *Note* \code{x} must match the \code{x} used in
+  \code{GetBSpline(x, ...)}.
 }

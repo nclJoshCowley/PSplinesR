@@ -17,9 +17,9 @@ GetBasis(x, deg, KKnots, i)
 }
 \value{
 The \eqn{i}-th basis function \eqn{\phi} of level \code{deg}
-from B-Spline generative procedure
+  from B-Spline generative procedure
 }
 \description{
 Retrieves the \eqn{i}-th basis function mapping for some given range
-\code{x}, degree and augmented knot set by means of recursion.
+  \code{x}, degree and augmented knot set by means of recursion.
 }

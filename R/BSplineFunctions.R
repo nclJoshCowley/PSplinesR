@@ -7,7 +7,7 @@
 #' Get Basis functions
 #'
 #' Retrieves the \eqn{i}-th basis function mapping for some given range
-#' \code{x}, degree and augmented knot set by means of recursion.
+#'   \code{x}, degree and augmented knot set by means of recursion.
 #'
 #' @param x Range of values to define the function over.
 #' @param deg Degree of the desired B-Spline.
@@ -15,7 +15,9 @@
 #' @param i Current level of basis function.
 #'
 #' @return The \eqn{i}-th basis function \eqn{\phi} of level \code{deg}
-#' from B-Spline generative procedure
+#'   from B-Spline generative procedure
+#'
+#' @export
 #'
 GetBasis <- function(x, deg, KKnots, i) {
   # Return base case (degree = 0)
@@ -47,15 +49,15 @@ GetBasis <- function(x, deg, KKnots, i) {
 #' Get B-Spline Matrix
 #'
 #' Generates B-Spline functions over some parameters and places such functions
-#' into columns of a \eqn{n} by \eqn{(m + deg + 1)} matrix
+#'   into columns of a \eqn{n} by \eqn{(m + deg + 1)} matrix
 #'
 #' @param x Range of values to define the function over.
 #' @param deg Degree of the desired B-Spline.
 #' @param IntKnots Interior knots that partially define the B-Spline.
-#' @param  ExtKnots Exterior knots, often \code{ExtKnots = c(min(x),max(x))}.
+#' @param ExtKnots Exterior knots, often \code{ExtKnots = c(min(x),max(x))}.
 #'
 #' @return Matrix where \eqn{i,j}-th entry corresponds to \eqn{j}-th basis
-#' function evaluated at \eqn{i}-th data point.
+#'   function evaluated at \eqn{i}-th data point.
 #'
 #' @export
 #'
@@ -79,8 +81,8 @@ GetBSpline <- function(x, deg = 3, IntKnots, ExtKnots) {
 #' Plot B-Spline functions
 #'
 #' Takes some B-Spline basis matrix from \code{GetBSpline()} and plots the
-#' output. *Note* \code{x} must match the \code{x} used in
-#' \code{GetBSpline(x, ...)}.
+#'   output. *Note* \code{x} must match the \code{x} used in
+#'   \code{GetBSpline(x, ...)}.
 #'
 #' @param x Same \code{x} used in \code{GetBSpline(x, ...)}.
 #' @param B Output from \code{GetBSpline()} call.
@@ -95,9 +97,9 @@ PlotBSpline <- function(x, B, lty = 1:ncol(B), col = 1:ncol(B)) {
   if (length(col == 1)) col = rep(col, ncol(B))
 
   # Create new plot window
-  plot(NULL, xlab = "x", ylab="y",
-       xlim = c(min(x), max(x)), ylim = c(min(B),1.1 * max(B)))
+  graphics::plot(NULL, xlab = "x", ylab="y",
+                 xlim = c(min(x), max(x)), ylim = c(min(B),1.1 * max(B)))
 
   # Add basis functions to plot
-  for (i in 1:ncol(B)) lines(x, B[, i], lty = lty[i], col = col[i])
+  for (i in 1:ncol(B)) graphics::lines(x, B[, i], lty = lty[i], col = col[i])
 }

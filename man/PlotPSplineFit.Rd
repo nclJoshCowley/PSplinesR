@@ -4,7 +4,7 @@
 \alias{PlotPSplineFit}
 \title{Plot P-Spline Fit to Data}
 \usage{
-PlotPSplineFit(x, y, lambda, CI = 0.95)
+PlotPSplineFit(x, y, lambda, CI = 0.95, ...)
 }
 \arguments{
 \item{x}{Vector of data points.}
@@ -13,7 +13,9 @@ PlotPSplineFit(x, y, lambda, CI = 0.95)
 
 \item{lambda}{Smoothing parameter.}
 
-\item{CI}{Given confidence level}
+\item{CI}{Given confidence level.}
+
+\item{...}{Optional graphical parameters.}
 }
 \description{
 Plot given data with curve showing fitted values as well as overlaying

@@ -89,13 +89,14 @@ PredictPSpline <- function(x, y, lambda, XNew) {
 #'   confidence intervals for given probability.
 #'
 #' @inheritParams FitPSpline
-#' @param CI Given confidence level
+#' @param CI Given confidence level.
+#' @param ... Optional graphical parameters.
 #'
 #' @export
 #'
-PlotPSplineFit <- function(x, y, lambda, CI = 0.95) {
+PlotPSplineFit <- function(x, y, lambda, CI = 0.95, ...) {
   # Plot original data
-  graphics::plot(x, y, pch = 4)
+  graphics::plot(x, y, pch = 4, ...)
 
   # Calculate SE
   fit <- PSplinesR::FitPSpline(x, y, lambda)

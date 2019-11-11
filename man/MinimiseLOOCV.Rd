@@ -4,7 +4,7 @@
 \alias{MinimiseLOOCV}
 \title{Minimised Leave-One-Out Cross Validation}
 \usage{
-MinimiseLOOCV(x, y, Lambdas, toPlot = T)
+MinimiseLOOCV(x, y, Lambdas, toPlot = T, ...)
 }
 \arguments{
 \item{x}{Vector of data points.}
@@ -15,6 +15,8 @@ MinimiseLOOCV(x, y, Lambdas, toPlot = T)
 
 \item{toPlot}{Logical. Should the plot of CV error against
 \code{Lambdas} appear?}
+
+\item{...}{Optional graphical parameters.}
 }
 \description{
 Finds the value from a given range that minimised the mean sqaure cross

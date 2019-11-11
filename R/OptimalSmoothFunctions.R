@@ -41,10 +41,11 @@ CalculateLOOCV <- function(x, y, lambda) {
 #' @param Lambdas Vector of smoothing paramaeters to test.
 #' @param toPlot Logical. Should the plot of CV error against
 #'   \code{Lambdas} appear?
+#' @param ... Optional graphical parameters.
 #'
 #' @export
 #'
-MinimiseLOOCV <- function(x, y, Lambdas, toPlot = T) {
+MinimiseLOOCV <- function(x, y, Lambdas, toPlot = T, ...) {
   if(missing(Lambdas)) stop("You must provide a range of smoothing values")
 
   CVs <-  vector(mode = "numeric", length = length(Lambdas))
@@ -54,7 +55,7 @@ MinimiseLOOCV <- function(x, y, Lambdas, toPlot = T) {
   }
 
   if (toPlot) {
-    graphics::plot(Lambdas, CVs, type="l")
+    graphics::plot(Lambdas, CVs, type="l", ...)
   }
 
   OptimalLambda = Lambdas[which(CVs == min(CVs))]

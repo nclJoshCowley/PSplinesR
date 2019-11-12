@@ -1,6 +1,6 @@
 ## ------------------------------------------------------------------------
 ## Josh Cowley.
-## Functions to select best smoothing parameter
+## Functions to select best smoothing parameter via LOOCV
 ## ------------------------------------------------------------------------
 
 

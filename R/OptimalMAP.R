@@ -12,9 +12,11 @@
 #' @param lambda Parameter of focus.
 #' @param B Design matrix obtained via natural cubic spline.
 #' @param D Difference matrix used in penalty term approximation.
-#' @param a,b Prior information.
+#' @param a,b Prior information related to normal-inverse gamma distribution.
 #' @param y Vector of observations.
 #' @param PriorDens Prior density of penalisation parameter.
+#'
+#' @return Evaluation of posterior density function given in Evers et al.
 #'
 #' @export
 #'
@@ -40,17 +42,28 @@ postDensity <- function(lambda, B, D, a, b, y, PriorDens) {
   return(Term1 * (Term2a / Term2b) * PriorDens(lambda))
 }
 
-
-PlotPostDensity <- function(x, y, Lambdas) {
+#' Plot Posterior Density for Smoothing Parameter in PSpline
+#'
+#' Plots the posterior density (to be used with MAP) when a natural cubic
+#'   spline and second order differencing matrix approximation is used.
+#'
+#' @inheritParams postDensity
+#' @param Lambdas Range of smoothing parameters to plot / scan.
+#'
+#' @return Value of smoothing parameter that reuturned minimal density.
+#'
+#' @export
+#'
+PlotPostDensity <- function(x, y, a, b, Lambdas, PriorDens, ...) {
   n <- length(x)
   B <- PSplinesR::GetBSpline(x, IntKnots = x[-c(1,n)], ExtKnots = c(x[1],x[n]))
   D <- PSplinesR::GetDiffMatrix(n)
-  a <- 0.0001
-  b <- 0.0001
 
   Dens <- vector(mode = "numeric", length = length(Lambdas))
-  for (i in 1:length(Lambdas)) Dens[i] <- postDensity(Lambdas[i], B, D, a, b, y)
-  plot(Lambdas, Dens, type="l")
+  for (i in 1:length(Lambdas)) {
+    Dens[i] <- postDensity(Lambdas[i], B, D, a, b, y, PriorDens)
+  }
+  plot(Lambdas, Dens, type="l", ...)
 
   MAPLambda <- Lambdas[which(Dens == max(Dens))]
   return(MAPLambda)

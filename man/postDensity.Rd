@@ -4,7 +4,7 @@
 \alias{postDensity}
 \title{Posterior Density of Lambda}
 \usage{
-postDensity(lambda, B, D, a, b, y, PriorDens = 1)
+postDensity(lambda, B, D, a, b, y, PriorDens)
 }
 \arguments{
 \item{lambda}{Parameter of focus.}
@@ -13,11 +13,14 @@ postDensity(lambda, B, D, a, b, y, PriorDens = 1)
 
 \item{D}{Difference matrix used in penalty term approximation.}
 
-\item{a, b}{Prior information.}
+\item{a, b}{Prior information related to normal-inverse gamma distribution.}
 
 \item{y}{Vector of observations.}
 
 \item{PriorDens}{Prior density of penalisation parameter.}
+}
+\value{
+Evaluation of posterior density function given in Evers et al.
 }
 \description{
 Uses the equation given in "Efficient and automatic methods for flexible

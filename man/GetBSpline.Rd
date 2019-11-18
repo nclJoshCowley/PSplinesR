@@ -21,5 +21,5 @@ Matrix where \eqn{i,j}-th entry corresponds to \eqn{j}-th basis
 }
 \description{
 Generates B-Spline functions over some parameters and places such functions
-  into columns of a \eqn{n} by \eqn{(m + deg + 1)} matrix
+  into columns of a \eqn{n} by \eqn{(m + deg + 1)} matrix.
 }

@@ -4,10 +4,14 @@
 \alias{PlotPostDensity}
 \title{Plot Posterior Density for Smoothing Parameter in PSpline}
 \usage{
-PlotPostDensity(x, y, Lambdas, PriorDens, ...)
+PlotPostDensity(x, y, a, b, Lambdas, PriorDens, ...)
 }
 \arguments{
 \item{y}{Vector of observations.}
+
+\item{a}{Prior information related to normal-inverse gamma distribution.}
+
+\item{b}{Prior information related to normal-inverse gamma distribution.}
 
 \item{Lambdas}{Range of smoothing parameters to plot / scan.}
 

@@ -60,9 +60,9 @@ FitPSpline <- function(x, y, lambda) {
 #'
 #' @inheritParams FitPSpline
 #' @param XNew A single data point, for which to predict a \code{y} value.
-#'   (Need to update code to accept vectors of XNew)
+#'   (Need to update code to accept vectors of XNew).
 #'
-#' @return Single predicted \code{y} value. (See note above)
+#' @return Single predicted \code{y} value. (See note above).
 #'
 #' @export
 #'

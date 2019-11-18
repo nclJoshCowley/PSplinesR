@@ -14,10 +14,10 @@ PredictPSpline(x, y, lambda, XNew)
 \item{lambda}{Smoothing parameter.}
 
 \item{XNew}{A single data point, for which to predict a \code{y} value.
-(Need to update code to accept vectors of XNew)}
+(Need to update code to accept vectors of XNew).}
 }
 \value{
-Single predicted \code{y} value. (See note above)
+Single predicted \code{y} value. (See note above).
 }
 \description{
 Predict a value for \eqn{y'}, given new value \eqn{x'} based on regression

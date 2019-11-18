@@ -3,6 +3,7 @@
 ## Functions to select best smoothing parameter via LOOCV
 ## ------------------------------------------------------------------------
 
+# postDensity() ------------------------------------------------------------
 #' Posterior Density of Lambda
 #'
 #' Uses the equation given in "Efficient and automatic methods for flexible
@@ -42,6 +43,8 @@ postDensity <- function(lambda, B, D, a, b, y, PriorDens) {
   return(Term1 * (Term2a / Term2b) * PriorDens(lambda))
 }
 
+
+# PlotPostDensity() -------------------------------------------------------
 #' Plot Posterior Density for Smoothing Parameter in PSpline
 #'
 #' Plots the posterior density (to be used with MAP) when a natural cubic

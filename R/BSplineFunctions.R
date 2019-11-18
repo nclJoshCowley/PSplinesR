@@ -3,6 +3,7 @@
 ## Functions to generate B-spline basis functions
 ## ------------------------------------------------------------------------
 
+
 # GetBasis() --------------------------------------------------------------
 #' Get Basis functions
 #'
@@ -15,7 +16,7 @@
 #' @param i Current level of basis function.
 #'
 #' @return The \eqn{i}-th basis function \eqn{\phi} of level \code{deg}
-#'   from B-Spline generative procedure
+#'   from B-Spline generative procedure.
 #'
 #' @export
 #'
@@ -49,7 +50,7 @@ GetBasis <- function(x, deg, KKnots, i) {
 #' Get B-Spline Matrix
 #'
 #' Generates B-Spline functions over some parameters and places such functions
-#'   into columns of a \eqn{n} by \eqn{(m + deg + 1)} matrix
+#'   into columns of a \eqn{n} by \eqn{(m + deg + 1)} matrix.
 #'
 #' @param x Range of values to define the function over.
 #' @param deg Degree of the desired B-Spline.
@@ -76,6 +77,7 @@ GetBSpline <- function(x, deg = 3, IntKnots, ExtKnots) {
   if(any(x == ExtKnots[2])) B[x == ExtKnots[2], NumF] <- 1
   return(B)
 }
+
 
 # PlotBSpline() -----------------------------------------------------------
 #' Plot B-Spline functions

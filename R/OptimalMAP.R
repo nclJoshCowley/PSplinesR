@@ -68,3 +68,4 @@ PlotPostDensity <- function(x, y, a, b, Lambdas, PriorDens, ...) {
   MAPLambda <- Lambdas[which(Dens == max(Dens))]
   return(MAPLambda)
 }
+

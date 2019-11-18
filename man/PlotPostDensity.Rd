@@ -4,7 +4,7 @@
 \alias{PlotPostDensity}
 \title{Plot Posterior Density for Smoothing Parameter in PSpline}
 \usage{
-PlotPostDensity(x, y, a, b, Lambdas, PriorDens, ...)
+PlotPostDensity(x, y, a, b, Lambdas, PriorDens, add = F, ...)
 }
 \arguments{
 \item{y}{Vector of observations.}
@@ -16,6 +16,9 @@ PlotPostDensity(x, y, a, b, Lambdas, PriorDens, ...)
 \item{Lambdas}{Range of smoothing parameters to plot / scan.}
 
 \item{PriorDens}{Prior density of penalisation parameter.}
+
+\item{add}{Logical. If true, plot is added to currently open graphical
+space.}
 }
 \value{
 Value of smoothing parameter that reuturned minimal density.

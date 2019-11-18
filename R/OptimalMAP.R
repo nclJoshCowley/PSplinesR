@@ -57,17 +57,26 @@ postDensity <- function(lambda, B, D, a, b, y, PriorDens) {
 #'
 #' @export
 #'
-PlotPostDensity <- function(x, y, a, b, Lambdas, PriorDens, ...) {
+PlotPostDensity <- function(x, y, a, b, Lambdas, PriorDens, add = F, ...) {
+  # Matrices currently defined by PSpline method
   n <- length(x)
   B <- PSplinesR::GetBSpline(x, IntKnots = x[-c(1,n)], ExtKnots = c(x[1],x[n]))
   D <- PSplinesR::GetDiffMatrix(n)
 
+  # Calculate posterior density for given arg Lambdas
   Dens <- vector(mode = "numeric", length = length(Lambdas))
   for (i in 1:length(Lambdas)) {
     Dens[i] <- postDensity(Lambdas[i], B, D, a, b, y, PriorDens)
   }
-  plot(Lambdas, Dens, type="l", ...)
 
+  # IF add is FALSE, create new plot space
+  if (!add) {
+    plot(Lambdas, Dens, type="l", ...)
+  } else {
+    lines(Lambdas, Dens, ...)
+  }
+
+  # Return Lambda value that minimised density
   MAPLambda <- Lambdas[which(Dens == max(Dens))]
   return(MAPLambda)
 }

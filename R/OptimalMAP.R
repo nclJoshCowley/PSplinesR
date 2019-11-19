@@ -22,8 +22,8 @@
 #' @export
 #'
 postDensity <- function(lambda, B, D, a, b, y, PriorDens) {
-  # Temporary -- PriorDens <- 1
-  if (missing(PriorDens)) PriorDens <- function(x) dlnorm(x)
+  # Use improper flat prior if prior density not given
+  if (missing(PriorDens)) PriorDens <- function(x) 1
 
   # Sample size
   n = length(y)
@@ -73,9 +73,9 @@ PlotPostDensity <- function(x, y, a, b, Lambdas, PriorDens, add = F, ...) {
 
   # IF add is FALSE, create new plot space
   if (!add) {
-    plot(Lambdas, Dens, type="l", ...)
+    graphics::plot(Lambdas, Dens, type="l", ...)
   } else {
-    lines(Lambdas, Dens, ...)
+    graphics::lines(Lambdas, Dens, ...)
   }
 
   # Return Lambda value that minimised density

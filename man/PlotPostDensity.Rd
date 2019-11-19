@@ -7,6 +7,8 @@
 PlotPostDensity(x, y, a, b, Lambdas, PriorDens, add = F, ...)
 }
 \arguments{
+\item{x}{Data points to be used as knots.}
+
 \item{y}{Vector of observations.}
 
 \item{a}{Prior information related to normal-inverse gamma distribution.}
@@ -19,8 +21,6 @@ PlotPostDensity(x, y, a, b, Lambdas, PriorDens, add = F, ...)
 
 \item{add}{Logical. If true, plot is added to currently open graphical
 space.}
-
-\item{x.}{Data points to be used as knots.}
 }
 \value{
 Value of smoothing parameter that reuturned minimal density.

@@ -84,3 +84,6 @@ PlotPostDensity <- function(x, y, a, b, Lambdas, PriorDens, add = F, ...) {
   return(MAPLambda)
 }
 
+FailingFunction <- function(t) {
+  failure
+}

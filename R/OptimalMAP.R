@@ -51,6 +51,7 @@ postDensity <- function(lambda, B, D, a, b, y, PriorDens) {
 #'   spline and second order differencing matrix approximation is used.
 #'
 #' @inheritParams postDensity
+#' @param x. Data points to be used as knots.
 #' @param Lambdas Range of smoothing parameters to plot / scan.
 #' @param add Logical. If true, plot is added to currently open graphical
 #'   space.

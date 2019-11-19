@@ -21,6 +21,8 @@ PlotPostDensity(x, y, a, b, Lambdas, PriorDens, add = F, ...)
 
 \item{add}{Logical. If true, plot is added to currently open graphical
 space.}
+
+\item{...}{Optional graphical parameters.}
 }
 \value{
 Value of smoothing parameter that reuturned minimal density.

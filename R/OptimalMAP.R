@@ -55,6 +55,7 @@ postDensity <- function(lambda, B, D, a, b, y, PriorDens) {
 #' @param Lambdas Range of smoothing parameters to plot / scan.
 #' @param add Logical. If true, plot is added to currently open graphical
 #'   space.
+#' @param ... Optional graphical parameters.
 #'
 #' @return Value of smoothing parameter that reuturned minimal density.
 #'

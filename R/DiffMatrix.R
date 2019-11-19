@@ -15,6 +15,8 @@
 #' @return A difference matrix of order \code{ord} with dimensions \code{nr}
 #'   by \eqn{\code{nr} + \code{ord}}
 #'
+#' @export
+#'
 GetDiffMatrix <- function(nr, ord = 2) {
   # Set up difference matrix
   D <- matrix(0, nrow = nr, ncol = nr + ord)
@@ -39,6 +41,8 @@ GetDiffMatrix <- function(nr, ord = 2) {
 #'
 #' @return Vector with all elements moved \code{i} spaces to the left with
 #'   end elements wrapping around.
+#'
+#' @export
 #'
 CPerm <- function(x, i = 1) {
   if(i == 0) {
